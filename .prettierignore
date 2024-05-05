@@ -1,0 +1,12 @@
+# auto generated
+LICENSE
+
+# calcagebra
+calcagebra
+
+# dependencies
+node_modules
+pnpm-lock.yaml
+
+# production
+dist
