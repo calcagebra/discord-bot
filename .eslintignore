@@ -1,8 +1,8 @@
+# calcagebra
+calcagebra
+
 # dependencies
 node_modules
-
-# env files
-.env
 
 # production
 dist

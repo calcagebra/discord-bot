@@ -1,0 +1,14 @@
+name = "discord-calcagebra-application"
+main = "src/index.ts"
+compatibility_date = "2024-04-29"
+compatibility_flags = ["nodejs_compat"]
+services = [{ binding = "CALCAGEBRA", service = "worker-rust" }]
+workers_dev = true
+
+[define]
+"global" = "globalThis"
+
+[vars]
+# DISCORD_APPLICATION_ID=
+# DISCORD_PUBLIC_KEY=
+# DISCORD_TOKEN=
