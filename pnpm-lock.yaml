@@ -11,6 +11,9 @@ dependencies:
   '@discordjs/rest':
     specifier: ^2.3.0
     version: 2.3.0
+  '@sapphire/discord-utilities':
+    specifier: ^3.2.3
+    version: 3.2.3
   tweetnacl:
     specifier: ^1.0.3
     version: 1.0.3
@@ -953,6 +956,13 @@ packages:
   /@sapphire/async-queue@1.5.2:
     resolution: {integrity: sha512-7X7FFAA4DngXUl95+hYbUF19bp1LGiffjJtu7ygrZrbdCSsdDDBaSjB7Akw0ZbOu6k0xpXyljnJ6/RZUvLfRdg==}
     engines: {node: '>=v14.0.0', npm: '>=7.0.0'}
+    dev: false
+
+  /@sapphire/discord-utilities@3.2.3:
+    resolution: {integrity: sha512-tGR1gp7djEEFuIFcj4fa0kaaJ/+sfm9UHHav6hSCvwytP33tUAIiH7hJhgbM/B7/WWCiwDIZXGBdKg9Wwc0TdA==}
+    engines: {node: '>=v14.0.0', npm: '>=7.0.0'}
+    dependencies:
+      discord-api-types: 0.37.83
     dev: false
 
   /@sapphire/snowflake@3.5.3:

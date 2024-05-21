@@ -1,12 +1,15 @@
 import {
+  ApplicationCommandOptionType,
   ApplicationCommandType,
   ComponentType,
   InteractionResponseType,
   TextInputStyle,
   type API,
   type APIChatInputApplicationCommandInteraction,
+  type RESTPostAPIChatInputApplicationCommandsJSONBody,
 } from "@discordjs/core/http-only";
-import { respond, type Env } from "../util/index.js";
+import { InteractionOptionResolver } from "@sapphire/discord-utilities";
+import { DELETE_BUTTON, respond, runCode, type Env } from "../util/index.js";
 
 export type CalcagebraCommandOptions = {
   api: API;
@@ -19,30 +22,51 @@ export default {
     name: "calcagebra",
     description: "Runs calcagebra code",
     type: ApplicationCommandType.ChatInput,
-  },
-  async execute({ api: _api, env: _env, interaction: _interaction }: CalcagebraCommandOptions) {
+    options: [
+      {
+        name: "code",
+        description: "The code to run",
+        type: ApplicationCommandOptionType.String,
+        min_length: 1,
+        max_length: 6_000,
+      },
+    ],
+  } satisfies RESTPostAPIChatInputApplicationCommandsJSONBody,
+  async execute({ api: _api, env, interaction }: CalcagebraCommandOptions) {
+    const code = new InteractionOptionResolver(interaction).getString("code");
+
+    if (code === null) {
+      return respond({
+        type: InteractionResponseType.Modal,
+        data: {
+          custom_id: "calcagebra",
+          title: "Run Calcagebra code",
+          components: [
+            {
+              type: ComponentType.ActionRow,
+              components: [
+                {
+                  custom_id: "code",
+                  label: "Code to run",
+                  style: TextInputStyle.Paragraph,
+                  min_length: 1,
+                  max_length: 4_000,
+                  placeholder: "The code to run",
+                  required: true,
+                  type: ComponentType.TextInput,
+                },
+              ],
+            },
+          ],
+        },
+      });
+    }
+
     return respond({
-      type: InteractionResponseType.Modal,
+      type: InteractionResponseType.ChannelMessageWithSource,
       data: {
-        custom_id: "calcagebra",
-        title: "Run Calcagebra code",
-        components: [
-          {
-            type: ComponentType.ActionRow,
-            components: [
-              {
-                custom_id: "code",
-                label: "Code to run",
-                style: TextInputStyle.Paragraph,
-                min_length: 1,
-                max_length: 4_000,
-                placeholder: "The code to run",
-                required: true,
-                type: ComponentType.TextInput,
-              },
-            ],
-          },
-        ],
+        content: await runCode(code, env),
+        components: [{ components: [DELETE_BUTTON], type: ComponentType.ActionRow }],
       },
     });
   },

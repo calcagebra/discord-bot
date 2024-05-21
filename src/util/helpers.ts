@@ -1,5 +1,5 @@
 import { Buffer } from "node:buffer";
-import type { Request } from "@cloudflare/workers-types/experimental";
+import type { Request as CloudflareRequest } from "@cloudflare/workers-types/experimental";
 import type { APIInteractionResponse } from "@discordjs/core/http-only";
 import tweetnacl from "tweetnacl";
 import type { Env } from "./index.js";
@@ -23,7 +23,14 @@ export function respond(response: APIInteractionResponse): Response {
   });
 }
 
-export async function verify(request: Request, env: Env) {
+export async function runCode(code: string, env: Env): Promise<string> {
+  const response = await env.CALCAGEBRA.fetch(new Request(env.WORKERS_URL, { body: code, method: "POST" }));
+  const result = await response.text();
+
+  return `Code: ${codeBlock({ language: "hs", code })}\nResult: ${codeBlock({ language: "hs", code: result })}`;
+}
+
+export async function verify(request: CloudflareRequest, env: Env): Promise<boolean> {
   const body = await request.clone().text();
   const signature = request.headers.get("X-Signature-Ed25519");
   const timestamp = request.headers.get("X-Signature-Timestamp");
