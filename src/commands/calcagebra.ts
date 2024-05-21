@@ -5,10 +5,10 @@ import {
   InteractionResponseType,
   TextInputStyle,
   type API,
-  type APIApplicationCommandInteractionDataStringOption,
   type APIChatInputApplicationCommandInteraction,
   type RESTPostAPIChatInputApplicationCommandsJSONBody,
 } from "@discordjs/core/http-only";
+import { InteractionOptionResolver } from "@sapphire/discord-utilities";
 import { DELETE_BUTTON, respond, runCode, type Env } from "../util/index.js";
 
 export type CalcagebraCommandOptions = {
@@ -33,10 +33,9 @@ export default {
     ],
   } satisfies RESTPostAPIChatInputApplicationCommandsJSONBody,
   async execute({ api: _api, env, interaction }: CalcagebraCommandOptions) {
-    const option = interaction.data.options?.[0] as APIApplicationCommandInteractionDataStringOption | undefined;
-    const code = option?.value;
+    const code = new InteractionOptionResolver(interaction).getString("code");
 
-    if (code === undefined) {
+    if (code === null) {
       return respond({
         type: InteractionResponseType.Modal,
         data: {
