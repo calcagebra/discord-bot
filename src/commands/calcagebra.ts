@@ -3,9 +3,11 @@ import {
   ApplicationCommandType,
   ComponentType,
   InteractionResponseType,
+  MessageFlags,
   TextInputStyle,
   type API,
   type APIChatInputApplicationCommandInteraction,
+  type APIInteractionResponseCallbackData,
   type RESTPostAPIChatInputApplicationCommandsJSONBody,
 } from "@discordjs/core/http-only";
 import { InteractionOptionResolver } from "@sapphire/discord-utilities";
@@ -30,10 +32,25 @@ export default {
         min_length: 1,
         max_length: 6_000,
       },
+      {
+        name: "debug",
+        description: "Whether to print debug information",
+        type: ApplicationCommandOptionType.Boolean,
+      },
+      {
+        name: "ephemeral",
+        description: "Whether to respond ephemerally",
+        type: ApplicationCommandOptionType.Boolean,
+      },
     ],
   } satisfies RESTPostAPIChatInputApplicationCommandsJSONBody,
   async execute({ api: _api, env, interaction }: CalcagebraCommandOptions) {
-    const code = new InteractionOptionResolver(interaction).getString("code");
+    const options = new InteractionOptionResolver(interaction);
+
+    const code = options.getString("code");
+
+    const debug = options.getBoolean("debug") ?? false;
+    const ephemeral = options.getBoolean("ephemeral") ?? false;
 
     if (code === null) {
       return respond({
@@ -57,17 +74,48 @@ export default {
                 },
               ],
             },
+            {
+              type: ComponentType.ActionRow,
+              components: [
+                {
+                  custom_id: "debug",
+                  label: "Debug",
+                  placeholder: "Whether to print debug information",
+                  required: true,
+                  style: TextInputStyle.Paragraph,
+                  type: ComponentType.TextInput,
+                  value: `${debug}`,
+                },
+              ],
+            },
+            {
+              type: ComponentType.ActionRow,
+              components: [
+                {
+                  custom_id: "ephemeral",
+                  label: "Ephemeral",
+                  placeholder: "Whether to respond ephemerally",
+                  required: true,
+                  style: TextInputStyle.Paragraph,
+                  type: ComponentType.TextInput,
+                  value: `${ephemeral}`,
+                },
+              ],
+            },
           ],
         },
       });
     }
 
-    return respond({
-      type: InteractionResponseType.ChannelMessageWithSource,
-      data: {
-        content: await runCode(code, env),
-        components: [{ components: [DELETE_BUTTON], type: ComponentType.ActionRow }],
-      },
-    });
+    const data: APIInteractionResponseCallbackData = {
+      content: await runCode(code, env, debug),
+      components: [{ components: [DELETE_BUTTON], type: ComponentType.ActionRow }],
+    };
+
+    if (ephemeral) {
+      data.flags = MessageFlags.Ephemeral;
+    }
+
+    return respond({ data, type: InteractionResponseType.ChannelMessageWithSource });
   },
 } as const;
