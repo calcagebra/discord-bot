@@ -18,8 +18,8 @@ export default {
   customId: "calcagebra",
   async execute({ api: _api, env, interaction }: CalcagebraModalOptions) {
     const code = interaction.data.components[0].components[0].value;
-    const debug = Boolean(interaction.data.components[0].components[1].value);
-    const ephemeral = Boolean(interaction.data.components[0].components[2].value);
+    const debug = Boolean(interaction.data.components[1].components[0].value);
+    const ephemeral = Boolean(interaction.data.components[2].components[0].value);
 
     const data: APIInteractionResponseCallbackData = {
       content: await runCode(code, env, debug),
