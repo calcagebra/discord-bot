@@ -42,11 +42,6 @@ export default {
         description: "Respond ephemerally",
         type: ApplicationCommandOptionType.Boolean,
       },
-      {
-        name: "globals",
-        description: "Print globals",
-        type: ApplicationCommandOptionType.Boolean,
-      },
     ],
   } satisfies RESTPostAPIChatInputApplicationCommandsJSONBody,
   async execute({ api: _api, env, interaction }: CalcagebraCommandOptions) {
@@ -56,7 +51,6 @@ export default {
 
     const debug = options.getBoolean("debug") ?? false;
     const ephemeral = options.getBoolean("ephemeral") ?? false;
-    const globals = options.getBoolean("globals") ?? false;
 
     if (code === null) {
       return respond({
@@ -114,7 +108,7 @@ export default {
     }
 
     const data: APIInteractionResponseCallbackData = {
-      content: await runCode(code, env, debug, globals),
+      content: await runCode(code, env, debug),
       components: [{ components: [DELETE_BUTTON], type: ComponentType.ActionRow }],
     };
 

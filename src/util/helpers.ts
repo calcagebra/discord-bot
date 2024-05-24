@@ -23,18 +23,16 @@ export function respond(response: APIInteractionResponse): Response {
   });
 }
 
-export async function runCode(code: string, env: Env, debug?: boolean, globals?: boolean): Promise<string> {
+export async function runCode(code: string, env: Env, debug?: boolean): Promise<string> {
   const response = await env.CALCAGEBRA.fetch(
     new Request((await env.WORKERS_URL.get("WORKERS_URL"))!, {
-      body: JSON.stringify({ code, debug, globals }),
+      body: JSON.stringify({ code, debug }),
       method: "POST",
     }),
   );
   const result = await response.text();
 
-  return globals === false
-    ? `Code: ${codeBlock({ language: "hs", code })}\nResult: ${codeBlock({ language: "hs", code: result })}`
-    : codeBlock({ language: "hs", code: result });
+  return `Code: ${codeBlock({ language: "hs", code })}\nResult: ${codeBlock({ language: "hs", code: result })}`;
 }
 
 export async function verify(request: CloudflareRequest, env: Env): Promise<boolean> {

@@ -5,7 +5,8 @@ import {
   type APIApplicationCommandInteraction,
   type APIChatInputApplicationCommandInteraction,
 } from "@discordjs/core/http-only";
-import createBookmarkCommand from "../commands/calcagebra.js";
+import calcagebraCommand from "../commands/calcagebra.js";
+import globalsCommand from "../commands/globals.js";
 import { respond, type Env } from "../util/index.js";
 
 export type HandleCommandOptions = {
@@ -16,10 +17,16 @@ export type HandleCommandOptions = {
 
 export async function handleCommand({ api, env, interaction }: HandleCommandOptions): Promise<Response> {
   try {
-    if (interaction.data.name === createBookmarkCommand.data.name) {
+    if (interaction.data.name === calcagebraCommand.data.name) {
       const commandInteraction = interaction as APIChatInputApplicationCommandInteraction;
 
-      return await createBookmarkCommand.execute({ api, env, interaction: commandInteraction });
+      return await calcagebraCommand.execute({ api, env, interaction: commandInteraction });
+    }
+
+    if (interaction.data.name === globalsCommand.data.name) {
+      const commandInteraction = interaction as APIChatInputApplicationCommandInteraction;
+
+      return await globalsCommand.execute({ api, env, interaction: commandInteraction });
     }
 
     return respond({
