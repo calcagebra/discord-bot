@@ -14,9 +14,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: pnpm
+          cache: yarn
       - name: Install & Build
-        run: pnpm install && pnpm build
+        run: yarn install && yarn build
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
