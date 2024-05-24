@@ -9,6 +9,7 @@
     "build": "tsc",
     "commitlint": "commitlint --edit",
     "deploy": "pnpm build && wrangler deploy",
+    "deploy:commands": "pnpm build && node --env-file=.env dist/deploy-commands.js",
     "dev": "pnpm build && wrangler dev dist/index.js",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
