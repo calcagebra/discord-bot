@@ -11,12 +11,17 @@ jobs:
     name: Deploy
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
-          node-version: 18
-          cache: yarn
-      - name: Install & Build
-        run: yarn install && yarn build
+          cache: "pnpm"
+          node-version: latest
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
+
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
