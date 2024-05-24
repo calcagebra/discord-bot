@@ -4,10 +4,11 @@ import {
   ComponentType,
   InteractionResponseType,
   MessageFlags,
+  type API,
   type APIChatInputApplicationCommandInteraction,
+  type APIInteractionResponseCallbackData,
   type RESTPostAPIChatInputApplicationCommandsJSONBody,
-} from "@discordjs/core";
-import type { API, APIInteractionResponseCallbackData } from "@discordjs/core/http-only";
+} from "@discordjs/core/http-only";
 import { InteractionOptionResolver } from "@sapphire/discord-utilities";
 import { DELETE_BUTTON, respond, type Env } from "../util/index.js";
 
