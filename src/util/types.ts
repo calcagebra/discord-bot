@@ -4,5 +4,7 @@ export type Env = {
   CALCAGEBRA: {
     fetch(req: Request): Promise<Response>;
   };
-  DISCORD_CALCAGEBRA_APPLICATION: KVNamespace;
+  DISCORD_PUBLIC_KEY: KVNamespace;
+  DISCORD_TOKEN: KVNamespace;
+  WORKERS_URL: KVNamespace;
 };
