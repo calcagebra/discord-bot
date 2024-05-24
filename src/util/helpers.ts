@@ -25,7 +25,10 @@ export function respond(response: APIInteractionResponse): Response {
 
 export async function runCode(code: string, env: Env, debug?: boolean, globals?: boolean): Promise<string> {
   const response = await env.CALCAGEBRA.fetch(
-    new Request(env.WORKERS_URL, { body: JSON.stringify({ code, debug, globals }), method: "POST" }),
+    new Request((await env.DISCORD_CALCAGEBRA_APPLICATION.get("WORKERS_URL"))!, {
+      body: JSON.stringify({ code, debug, globals }),
+      method: "POST",
+    }),
   );
   const result = await response.text();
 
@@ -44,6 +47,6 @@ export async function verify(request: CloudflareRequest, env: Env): Promise<bool
   return sign.detached.verify(
     Buffer.from(timestamp.concat(body)),
     Buffer.from(signature, "hex"),
-    Buffer.from(env.DISCORD_PUBLIC_KEY, "hex"),
+    Buffer.from((await env.DISCORD_CALCAGEBRA_APPLICATION.get("DISCORD_PUBLIC_KEY"))!, "hex"),
   );
 }

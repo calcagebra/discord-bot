@@ -4,13 +4,13 @@ compatibility_date = "2024-04-29"
 compatibility_flags = ["nodejs_compat"]
 services = [{ binding = "CALCAGEBRA", service = "worker-rust" }]
 workers_dev = true
-
 kv_namespaces = [
   { binding = "DISCORD_APPLICATION_ID", id = "b00c3ff26bf0449481b80a8d4bb9477c" },
   { binding = "DISCORD_PUBLIC_KEY", id = "b00c3ff26bf0449481b80a8d4bb9477c" },
   { binding = "DISCORD_TOKEN", id = "b00c3ff26bf0449481b80a8d4bb9477c" },
   { binding = "WORKERS_URL", id = "b00c3ff26bf0449481b80a8d4bb9477c" }
 ]
+
 [define]
 "global" = "globalThis"
 

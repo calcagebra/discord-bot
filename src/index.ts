@@ -6,7 +6,7 @@ import type { Env } from "./util/index.js";
 
 export default {
   async fetch(request: Request, env: Env, _ctx: ExecutionContext) {
-    const rest = new REST().setToken(env.DISCORD_TOKEN);
+    const rest = new REST().setToken((await env.DISCORD_CALCAGEBRA_APPLICATION.get("DISCORD_TOKEN"))!);
 
     const api = new API(rest);
 
