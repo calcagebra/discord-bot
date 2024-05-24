@@ -10,7 +10,7 @@ import {
   type RESTPostAPIChatInputApplicationCommandsJSONBody,
 } from "@discordjs/core/http-only";
 import { InteractionOptionResolver } from "@sapphire/discord-utilities";
-import { DELETE_BUTTON, WORKERS_URL, respond, type Env } from "../util/index.js";
+import { DELETE_BUTTON, WORKERS_URL, codeBlock, respond, type Env } from "../util/index.js";
 
 type GlobalsCommandOptions = {
   api: API;
@@ -36,14 +36,12 @@ export default {
 
     const ephemeral = options.getBoolean("ephemeral") ?? false;
 
-    const response = await env.CALCAGEBRA.fetch(
-      new Request(WORKERS_URL.concat("globals"), { body: JSON.stringify({ globals: true }), method: "GET" }),
-    );
+    const response = await env.CALCAGEBRA.fetch(new Request(WORKERS_URL.concat("globals"), { method: "GET" }));
 
     const globals = await response.text();
 
     const data: APIInteractionResponseCallbackData = {
-      content: globals,
+      content: codeBlock({ code: globals, language: "hs" }),
       components: [{ components: [DELETE_BUTTON], type: ComponentType.ActionRow }],
     };
 
