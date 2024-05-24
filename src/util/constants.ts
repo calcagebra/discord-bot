@@ -7,3 +7,5 @@ export const DELETE_BUTTON: APIButtonComponent = {
   style: ButtonStyle.Danger,
   type: ComponentType.Button,
 } as const;
+
+export const WORKERS_URL = "https://worker-rust.megatank.workers.dev/";

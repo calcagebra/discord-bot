@@ -2,7 +2,7 @@ import { Buffer } from "node:buffer";
 import type { Request as CloudflareRequest } from "@cloudflare/workers-types/experimental";
 import type { APIInteractionResponse } from "@discordjs/core/http-only";
 import tweetnacl from "tweetnacl";
-import type { Env } from "./index.js";
+import { WORKERS_URL, type Env } from "./index.js";
 
 const { sign } = tweetnacl;
 
@@ -25,11 +25,9 @@ export function respond(response: APIInteractionResponse): Response {
 
 export async function runCode(code: string, env: Env, debug?: boolean): Promise<string> {
   const response = await env.CALCAGEBRA.fetch(
-    new Request((await env.WORKERS_URL.get("WORKERS_URL"))!, {
-      body: JSON.stringify({ code, debug }),
-      method: "POST",
-    }),
+    new Request(WORKERS_URL, { body: JSON.stringify({ code, debug }), method: "POST" }),
   );
+
   const result = await response.text();
 
   return `Code: ${codeBlock({ language: "hs", code })}\nResult: ${codeBlock({ language: "hs", code: result })}`;
