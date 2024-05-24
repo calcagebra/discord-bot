@@ -11,4 +11,9 @@ workers_dev = true
 [placement]
 mode = "smart"
 
-[vars]
+kv_namespaces = [
+  { binding = "DISCORD_APPLICATION_ID", id = "b00c3ff26bf0449481b80a8d4bb9477c" },
+  { binding = "DISCORD_PUBLIC_KEY", id = "b00c3ff26bf0449481b80a8d4bb9477c" },
+  { binding = "DISCORD_TOKEN", id = "b00c3ff26bf0449481b80a8d4bb9477c" },
+  { binding = "WORKERS_URL", id = "b00c3ff26bf0449481b80a8d4bb9477c" }
+]
