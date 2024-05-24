@@ -34,12 +34,17 @@ export default {
       },
       {
         name: "debug",
-        description: "Whether to print debug information",
+        description: "Print debug information",
         type: ApplicationCommandOptionType.Boolean,
       },
       {
         name: "ephemeral",
-        description: "Whether to respond ephemerally",
+        description: "Respond ephemerally",
+        type: ApplicationCommandOptionType.Boolean,
+      },
+      {
+        name: "globals",
+        description: "Print globals",
         type: ApplicationCommandOptionType.Boolean,
       },
     ],
@@ -51,6 +56,7 @@ export default {
 
     const debug = options.getBoolean("debug") ?? false;
     const ephemeral = options.getBoolean("ephemeral") ?? false;
+    const globals = options.getBoolean("globals") ?? false;
 
     if (code === null) {
       return respond({
@@ -108,7 +114,7 @@ export default {
     }
 
     const data: APIInteractionResponseCallbackData = {
-      content: await runCode(code, env, debug),
+      content: await runCode(code, env, debug, globals),
       components: [{ components: [DELETE_BUTTON], type: ComponentType.ActionRow }],
     };
 
