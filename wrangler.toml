@@ -10,9 +10,7 @@ kv_namespaces = [
   { binding = "DISCORD_TOKEN", id = "b00c3ff26bf0449481b80a8d4bb9477c" },
   { binding = "WORKERS_URL", id = "b00c3ff26bf0449481b80a8d4bb9477c" }
 ]
-
-[define]
-"global" = "globalThis"
+node_compat = true
 
 [placement]
 mode = "smart"
